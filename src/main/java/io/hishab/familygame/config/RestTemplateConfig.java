@@ -1,4 +1,4 @@
-package io.bjit.familygame.config;
+package io.hishab.familygame.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;

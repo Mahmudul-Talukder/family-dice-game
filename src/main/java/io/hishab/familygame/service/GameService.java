@@ -1,7 +1,7 @@
-package io.bjit.familygame.service;
+package io.hishab.familygame.service;
 
-import io.bjit.familygame.exception.GameException;
-import io.bjit.familygame.model.Player;
+import io.hishab.familygame.exception.GameException;
+import io.hishab.familygame.model.Player;
 
 import java.util.List;
 

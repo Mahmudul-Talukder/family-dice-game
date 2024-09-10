@@ -1,4 +1,4 @@
-package io.bjit.familygame.config;
+package io.hishab.familygame.config;
 
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;

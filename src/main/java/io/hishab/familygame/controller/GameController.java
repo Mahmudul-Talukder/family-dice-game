@@ -1,8 +1,8 @@
-package io.bjit.familygame.controller;
+package io.hishab.familygame.controller;
 
-import io.bjit.familygame.model.CustomResponse;
-import io.bjit.familygame.model.Player;
-import io.bjit.familygame.service.GameService;
+import io.hishab.familygame.model.CustomResponse;
+import io.hishab.familygame.model.Player;
+import io.hishab.familygame.service.GameService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

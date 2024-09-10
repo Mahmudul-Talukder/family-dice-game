@@ -1,4 +1,4 @@
-package io.bjit.familygame;
+package io.hishab.familygame;
 
 public class FamilyGameApplicationTests {
 }

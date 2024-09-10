@@ -1,4 +1,4 @@
-package io.bjit.familygame.exception;
+package io.hishab.familygame.exception;
 
 public class GameException extends RuntimeException {
     private final String errorCode;

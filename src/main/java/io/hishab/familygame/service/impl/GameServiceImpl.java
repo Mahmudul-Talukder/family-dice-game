@@ -1,9 +1,10 @@
-package io.bjit.familygame.service.impl;
+package io.hishab.familygame.service.impl;
 
-import io.bjit.familygame.config.GameProperties;
-import io.bjit.familygame.exception.GameException;
-import io.bjit.familygame.model.Player;
-import io.bjit.familygame.service.GameService;
+import io.hishab.familygame.config.GameProperties;
+import io.hishab.familygame.exception.GameException;
+import io.hishab.familygame.model.Player;
+import io.hishab.familygame.service.GameService;
+import io.hishab.familygame.util.DiceRoller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class GameServiceImpl implements GameService {
     private boolean gameStarted = false;
     private Player winner = null;
     private final Random random = new Random();
+    private final DiceRoller diceRoller;
 
     @Override
     public void addPlayer(Player player) throws GameException {
@@ -146,23 +148,16 @@ public class GameServiceImpl implements GameService {
             Integer diceRoll = restTemplate.getForObject(gameProperties.getInnerApiUrl(), Integer.class);
             if (diceRoll == null) {
                 log.info("Dice roll API returned null, generating a random fallback value.");
-                return getRandomDiceRoll();
+                return diceRoller.roll();
             }
             return diceRoll;
         } catch (ResourceAccessException e) {
             log.info("Failed to call dice roll API, using random fallback due to connection error: {}", e.getMessage());
-            return getRandomDiceRoll();
+            return diceRoller.roll();
         } catch (Exception e) {
             log.info("An unexpected error occurred while calling dice roll API, using random fallback.", e);
-            return getRandomDiceRoll();
+            return diceRoller.roll();
         }
     }
 
-
-    /**
-     * Generates a random dice roll value between 1 and 6.
-     */
-    private int getRandomDiceRoll() {
-        return random.nextInt(6) + 1;  // Random value between 1 and 6
-    }
 }

@@ -1,4 +1,4 @@
-package io.bjit.familygame.model;
+package io.hishab.familygame.model;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;

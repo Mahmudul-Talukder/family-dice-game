@@ -1,4 +1,4 @@
-package io.bjit.familygame.config;
+package io.hishab.familygame.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

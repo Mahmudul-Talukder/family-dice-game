@@ -1,6 +1,6 @@
-package io.bjit.familygame.exception;
+package io.hishab.familygame.exception;
 
-import io.bjit.familygame.model.CustomErrorResponse;
+import io.hishab.familygame.model.CustomErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
