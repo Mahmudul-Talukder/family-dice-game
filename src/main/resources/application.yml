@@ -1,0 +1,8 @@
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+game:
+  winning-score: 25
+  inner-api-url: http://developer-test.hishab.io/api/v1/roll-dice
