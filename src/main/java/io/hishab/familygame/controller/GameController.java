@@ -1,5 +1,6 @@
 package io.hishab.familygame.controller;
 
+import io.hishab.familygame.exception.GameException;
 import io.hishab.familygame.model.CustomResponse;
 import io.hishab.familygame.model.Player;
 import io.hishab.familygame.service.GameService;
@@ -32,8 +33,12 @@ public class GameController {
      * @throws MethodArgumentNotValidException if player validation fails.
      */
     @PostMapping("/player")
-    public ResponseEntity<CustomResponse> addPlayer(@RequestBody @Valid Player player) throws MethodArgumentNotValidException {
+    public ResponseEntity<CustomResponse> addPlayer(@RequestBody  Player player) throws MethodArgumentNotValidException {
         logger.info("Received player for addition: {}", player);
+        String validationError = validatePlayer(player);
+        if (validationError != null) {
+            throw new GameException("ERR-400", validationError);
+        }
         gameService.addPlayer(player);
         CustomResponse response = CustomResponse.builder()
                 .result("Ok")
@@ -63,6 +68,17 @@ public class GameController {
     public ResponseEntity<List<Player>> getCurrentScores() {
         List<Player> scores = gameService.getCurrentScores();
         return ResponseEntity.ok(scores);
+    }
+
+    // Manual validation method for Player
+    private String validatePlayer(Player player) {
+        if (player.getName() == null || player.getName().trim().isEmpty()) {
+            return "Player name is mandatory";
+        }
+        if (player.getAge() == null || player.getAge() < 0) {
+            return "Player age can not be negative integer";
+        }
+        return null;
     }
 }
 
