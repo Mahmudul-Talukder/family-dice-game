@@ -23,12 +23,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GameServiceImpl implements GameService {
     private final GameProperties gameProperties;
     private final RestTemplate restTemplate;
+    private final DiceRoller diceRoller;
 
     private final Map<String, Player> players = new ConcurrentHashMap<>();
     private boolean gameStarted = false;
     private Player winner = null;
     private final Random random = new Random();
-    private final DiceRoller diceRoller;
 
     @Override
     public void addPlayer(Player player) throws GameException {
@@ -55,11 +55,10 @@ public class GameServiceImpl implements GameService {
         this.gameStarted = true;
         this.winner = null;
 
-        int winningScore = gameProperties.getWinningScore();  // Use the winning score from GameProperties
+        int winningScore = gameProperties.getWinningScore();
 
         log.info("Game started with {} players. Winning score is {}", players.size(), winningScore);
 
-        // Continuously roll dice for each player until we have a winner
         while (!hasWinner()) {
             for (Player player : players.values()) {
                 rollDiceForPlayer(player);
@@ -80,33 +79,33 @@ public class GameServiceImpl implements GameService {
     }
 
     /**
-     * Roll the dice for a given player, considering special rules for dice rolls.
+     * Rolls the dice for a given player according to game rules.
+     *
+     * @param player The player whose dice will be rolled.
      */
-    public void rollDiceForPlayer(Player player) {
+    private void rollDiceForPlayer(Player player) {
         int diceRoll = getDiceRollWithFallback();
-        log.info("Player name:  {} Total Score: {} Current Value of Dice: {}", player.getName(), player.getScore(), diceRoll);
+        log.info("Player name: {} Total Score: {} Current Value of Dice: {}", player.getName(), player.getScore(), diceRoll);
 
         if (!player.isStarted()) {
-            // Special rule: player must roll a 6 to start accumulating points
             if (diceRoll == 6) {
                 log.info("Player {} starts the game by rolling a 6", player.getName());
-                player.setStarted(true);  // Player can now start accumulating points
-                diceRoll = getDiceRollWithFallback(); // Roll again to determine starting score
-                log.info("Player name:  {} Total Score: {} Current Value of Dice: {}", player.getName(), player.getScore(), diceRoll);
+                player.setStarted(true);
+                diceRoll = getDiceRollWithFallback();
+                log.info("Player name: {} Total Score: {} Current Value of Dice: {}", player.getName(), player.getScore(), diceRoll);
                 if (diceRoll == 6) {
                     log.info("Player {} rolled a 6 again after starting, score remains 0", player.getName());
-                    player.setScore(0); // Start score is 0 if they roll a 6 after starting
+                    player.setScore(0);
                 } else {
-                    player.setScore(diceRoll); // Set the starting score
+                    player.setScore(diceRoll);
                     log.info("Player {}'s starting score is {}", player.getName(), player.getScore());
                 }
             } else {
                 log.info("Player {} must wait, did not roll a 6", player.getName());
-                return; // Player's turn ends since they didn't roll a 6
+                return;
             }
         } else {
             if (diceRoll == 4) {
-                // Special rule: rolling 4 deducts 4 points, but score can't go below 0
                 if (player.getScore() > 0) {
                     player.setScore(Math.max(0, player.getScore() - 4));
                     log.info("Player {} loses 4 points for rolling a 4. Total score: {}", player.getName(), player.getScore());
@@ -114,23 +113,19 @@ public class GameServiceImpl implements GameService {
                     log.info("Player {} rolled a 4, but score is already 0. No points deducted.", player.getName());
                 }
             } else if (diceRoll == 6) {
-                // Special rule: rolling 6 grants an extra roll (no points are added yet)
                 log.info("Player {} gets an extra roll for rolling a 6", player.getName());
-                rollDiceForPlayer(player); // Recursive call for extra roll
+                rollDiceForPlayer(player);
             } else {
-                // Add the dice value to the player's score
                 player.setScore(player.getScore() + diceRoll);
                 log.info("Player {}'s total score is now {}", player.getName(), player.getScore());
             }
 
-            // Check if the player has reached or exceeded the winning score
-            if (player.getScore() >= gameProperties.getWinningScore()) { // Use the winning score from GameProperties
+            if (player.getScore() >= gameProperties.getWinningScore()) {
                 winner = player;
                 log.info("Player {} has won the game with a score of {}", player.getName(), player.getScore());
             }
         }
     }
-
 
     @Override
     public List<Player> getCurrentScores() {
@@ -138,10 +133,9 @@ public class GameServiceImpl implements GameService {
     }
 
     /**
-     * Attempts to get a dice roll from the API. If the API call fails, it falls back to a random roll.
-     * No retry is performed after the first failed API call.
+     * Attempts to get a dice roll from the API. Falls back to a random roll if the API call fails.
      *
-     * @return int The dice roll result, either from the API or randomly generated
+     * @return The dice roll result, either from the API or randomly generated.
      */
     private int getDiceRollWithFallback() {
         try {
@@ -159,5 +153,4 @@ public class GameServiceImpl implements GameService {
             return diceRoller.roll();
         }
     }
-
 }

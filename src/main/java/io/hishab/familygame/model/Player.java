@@ -20,5 +20,5 @@ public class Player {
     private boolean started = false;
 
     private int score;
-
 }
+

@@ -11,12 +11,19 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class RestTemplateConfig {
+
     @Value("${special.dice.roll.api.read-time-out}")
-    int internalApiReadTimeout;
+    private int internalApiReadTimeout;
 
     @Value("${special.dice.roll.api.connection-time-out}")
-    int internalApiConnectionTimeout;
+    private int internalApiConnectionTimeout;
 
+    /**
+     * Configures a RestTemplate bean with custom timeouts.
+     *
+     * @param builder the RestTemplateBuilder
+     * @return the configured RestTemplate
+     */
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder
@@ -25,14 +32,14 @@ public class RestTemplateConfig {
     }
 
     /**
-     * Client http request factory client http request factory.
+     * Creates a ClientHttpRequestFactory with custom timeouts.
      *
-     * @return the client http request factory
+     * @return the ClientHttpRequestFactory
      */
     private ClientHttpRequestFactory clientHttpRequestFactory() {
-        SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
-        simpleClientHttpRequestFactory.setReadTimeout(internalApiReadTimeout);
-        simpleClientHttpRequestFactory.setConnectTimeout(internalApiConnectionTimeout);
-        return simpleClientHttpRequestFactory;
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setReadTimeout(internalApiReadTimeout);
+        factory.setConnectTimeout(internalApiConnectionTimeout);
+        return factory;
     }
 }

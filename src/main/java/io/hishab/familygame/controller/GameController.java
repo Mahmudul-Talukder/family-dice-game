@@ -24,6 +24,13 @@ public class GameController {
 
     private final GameService gameService;
 
+    /**
+     * Adds a new player to the game.
+     *
+     * @param player The player to be added.
+     * @return ResponseEntity containing success message.
+     * @throws MethodArgumentNotValidException if player validation fails.
+     */
     @PostMapping("/player")
     public ResponseEntity<CustomResponse> addPlayer(@RequestBody @Valid Player player) throws MethodArgumentNotValidException {
         logger.info("Received player for addition: {}", player);
@@ -36,9 +43,9 @@ public class GameController {
     }
 
     /**
-     * Starts the game after validating that the number of players is between 2 and 4.
+     * Starts the game after validating the number of players.
      *
-     * @return ResponseEntity containing the name of the winning player.
+     * @return ResponseEntity containing the name and score of the winner.
      */
     @GetMapping("/start")
     public ResponseEntity<String> startGame() {
@@ -47,9 +54,15 @@ public class GameController {
         return ResponseEntity.ok("The winner is: " + winner.getName() + " with a score of " + winner.getScore());
     }
 
+    /**
+     * Retrieves the current scores of all players.
+     *
+     * @return ResponseEntity containing the list of players with their scores.
+     */
     @GetMapping("/scores")
     public ResponseEntity<List<Player>> getCurrentScores() {
         List<Player> scores = gameService.getCurrentScores();
         return ResponseEntity.ok(scores);
     }
 }
+

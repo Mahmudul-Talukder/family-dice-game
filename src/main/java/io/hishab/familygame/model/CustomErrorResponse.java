@@ -10,4 +10,3 @@ public class CustomErrorResponse {
     private String errorCode;
     private String message;
 }
-
