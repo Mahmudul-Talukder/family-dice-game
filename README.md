@@ -7,8 +7,7 @@ to manage players, start the game, roll dice, update scores, and retrieve curren
 ## Features
 
 - Add New Players: Add players to the game.
-- Start the Game: Initiate the game with the added players.
-- Roll Dice and Update Scores: Call an external API to get dice roll values and update player scores accordingly.
+- Start the Game: Initiate the game with the added players. Call an external API to get dice roll values and update player scores accordingly.
 - Retrieve Current Scores: Get the current scores of all players.
 
 
@@ -21,8 +20,7 @@ to manage players, start the game, roll dice, update scores, and retrieve curren
 ## Build and Run
 
 1. Clone the repository:
-
-   git clone https://github.com/your-repository/family-game.git
+   git clone https://github.com/Mahmudul-Talukder/family-game.git
    cd family-game
 
 2. Build the Application:
@@ -30,12 +28,13 @@ to manage players, start the game, roll dice, update scores, and retrieve curren
    mvn clean install
 
 3. Run the Application:
+   
    mvn spring-boot:run
 
-4. swagger-ui
+5. swagger-ui
    http://localhost:8082/swagger-ui.html
 
-5. Request sample
+6. Request sample
    
    Create a new player:
    curl --location 'http://localhost:8085/api/game/player' \
