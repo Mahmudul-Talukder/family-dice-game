@@ -37,8 +37,10 @@ to manage players, start the game, roll dice, update scores, and retrieve curren
 
 6. swagger-ui
    http://localhost:8086/swagger-ui.html
+7. api documentation
+   http://localhost:8086/v3/api-docs
 
-7. Request sample
+8. Request sample
    
    Create a new player:
    curl --location 'http://localhost:8086/api/game/player' \
