@@ -86,25 +86,34 @@ public class GameServiceImpl implements GameService {
     private void rollDiceForPlayer(Player player) {
         int diceRoll = getDiceRollWithFallback();
         log.info("Player name: {} Total Score: {} Current Value of Dice: {}", player.getName(), player.getScore(), diceRoll);
-
+        // If the player hasn't started, they need to roll a 6 to begin
         if (!player.isStarted()) {
             if (diceRoll == 6) {
                 log.info("Player {} starts the game by rolling a 6", player.getName());
                 player.setStarted(true);
+
+                // Player rolls again after starting the game with a 6
                 diceRoll = getDiceRollWithFallback();
                 log.info("Player name: {} Total Score: {} Current Value of Dice: {}", player.getName(), player.getScore(), diceRoll);
+
+                // If the player rolls another 6 right after starting, their score remains 0
                 if (diceRoll == 6) {
                     log.info("Player {} rolled a 6 again after starting, score remains 0", player.getName());
                     player.setScore(0);
                 } else {
+                    // Otherwise, the rolled value is added to the player's score
+
                     player.setScore(diceRoll);
                     log.info("Player {}'s starting score is {}", player.getName(), player.getScore());
                 }
             } else {
+                // Player must wait for a 6 to start the game
                 log.info("Player {} must wait, did not roll a 6", player.getName());
                 return;
             }
         } else {
+            // If the player rolls a 4, 4 points are deducted, but the score cannot go below 0
+
             if (diceRoll == 4) {
                 if (player.getScore() > 0) {
                     player.setScore(Math.max(0, player.getScore() - 4));
@@ -113,13 +122,15 @@ public class GameServiceImpl implements GameService {
                     log.info("Player {} rolled a 4, but score is already 0. No points deducted.", player.getName());
                 }
             } else if (diceRoll == 6) {
+                // Player gets an extra roll when they roll a 6
                 log.info("Player {} gets an extra roll for rolling a 6", player.getName());
                 rollDiceForPlayer(player);
             } else {
+                // The rolled value is added to the player's score
                 player.setScore(player.getScore() + diceRoll);
                 log.info("Player {}'s total score is now {}", player.getName(), player.getScore());
             }
-
+            // If the player's score meets or exceeds the winning score, they win the game
             if (player.getScore() >= gameProperties.getWinningScore()) {
                 winner = player;
                 log.info("Player {} has won the game with a score of {}", player.getName(), player.getScore());
