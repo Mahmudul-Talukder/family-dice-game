@@ -21,28 +21,37 @@ to manage players, start the game, roll dice, update scores, and retrieve curren
 
 1. Clone the repository:
    git clone https://github.com/Mahmudul-Talukder/family-game.git
+   
    cd family-game
 
 2. Build the Application:
+
    mvn clean install
 
 3. Run the Application:
+
    mvn spring-boot:run
 
 4. Build the Docker image 
+
    docker build -t hishab-family-special-app .
 
 5. Run the Docker container 
+   
    docker run -d -p 8086:8082 --name=special-family-app-hishab  hishab-family-special-app
 
 6. swagger-ui
+
    http://localhost:8086/swagger-ui.html
+
 7. api documentation
+
    http://localhost:8086/v3/api-docs
 
 8. Request sample
    
    Create a new player:
+
    curl --location 'http://localhost:8086/api/game/player' \
    --header 'Content-Type: application/json' \
    --data '{
@@ -51,10 +60,12 @@ to manage players, start the game, roll dice, update scores, and retrieve curren
    }'
 
    Start game:
+
    curl --location 'http://localhost:8086/api/game/start' \
    --header 'Content-Type: application/json'
 
    Retrieve current scores:
+
    curl --location 'http://localhost:8086/api/game/scores' \
    --header 'Content-Type: application/json' \
    --data ''
