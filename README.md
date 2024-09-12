@@ -24,20 +24,24 @@ to manage players, start the game, roll dice, update scores, and retrieve curren
    cd family-game
 
 2. Build the Application:
-
    mvn clean install
 
 3. Run the Application:
-   
    mvn spring-boot:run
 
-5. swagger-ui
-   http://localhost:8082/swagger-ui.html
+4. Build the Docker image 
+   docker build -t hishab-family-special-app .
 
-6. Request sample
+5. Run the Docker container 
+   docker run -d -p 8086:8082 --name=special-family-app-hishab  hishab-family-special-app
+
+6. swagger-ui
+   http://localhost:8086/swagger-ui.html
+
+7. Request sample
    
    Create a new player:
-   curl --location 'http://localhost:8085/api/game/player' \
+   curl --location 'http://localhost:8086/api/game/player' \
    --header 'Content-Type: application/json' \
    --data '{
    "name": "mahmud",
@@ -45,11 +49,11 @@ to manage players, start the game, roll dice, update scores, and retrieve curren
    }'
 
    Start game:
-   curl --location 'http://localhost:8085/api/game/start' \
+   curl --location 'http://localhost:8086/api/game/start' \
    --header 'Content-Type: application/json'
 
    Retrieve current scores:
-   curl --location 'http://localhost:8085/api/game/scores' \
+   curl --location 'http://localhost:8086/api/game/scores' \
    --header 'Content-Type: application/json' \
    --data ''
    
